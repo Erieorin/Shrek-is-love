@@ -11,7 +11,6 @@ public class ThirdPersonMovement : MonoBehaviour
     public Transform _groundCheck;
     public Animator _animator;
 
-    // public float _speed = 10f;
     public float _minimumSpeed = 10f;
     public float _gravity = -9.81f;
     public float _jumpHeight = 3f;
@@ -27,6 +26,7 @@ public class ThirdPersonMovement : MonoBehaviour
     public LayerMask _groundMask;
 
     public bool _isGrounded;
+    public bool _canMove = true;
 
     void Start()
     {
@@ -37,7 +37,9 @@ public class ThirdPersonMovement : MonoBehaviour
     {
         Move();
         Gravity();
+        Attack();
         Jump();
+        SoundEffects();
     }
 
     private void Move()
@@ -55,7 +57,7 @@ public class ThirdPersonMovement : MonoBehaviour
 
         float _speed = _inputMagnitude * _minimumSpeed;
 
-        if (_direction.magnitude >= 0.1f) // проверяем, двиагемся ли, сравнивая длину вектора направления
+        if (_direction.magnitude >= 0.1f && _canMove) // проверяем, двиагемся ли, сравнивая длину вектора направления
         {
             // угол поворота игрока. atan2 - функция, возвращающая угол между осью и вектором направления
             float _targetAngle = Mathf.Atan2(_direction.x, _direction.z) * Mathf.Rad2Deg + _camera.eulerAngles.y; // переводим в градусы и добавляем вращение камеры по y 
@@ -67,7 +69,6 @@ public class ThirdPersonMovement : MonoBehaviour
             _characterController.Move(_moveDirection.normalized * _speed * Time.deltaTime);
 
         }
-
         _animator.SetFloat("inputMagnitude", _inputMagnitude, 0.1f, Time.deltaTime);
     }
 
@@ -87,7 +88,7 @@ public class ThirdPersonMovement : MonoBehaviour
 
     private void Jump()
     {
-        if (Input.GetButton("Jump") && _isGrounded)
+        if (Input.GetButton("Jump") && _isGrounded && _canMove)
         {
             _velocity.y = Mathf.Sqrt(_jumpHeight * -2f * _gravity);
             Console.WriteLine("jump");
@@ -98,6 +99,48 @@ public class ThirdPersonMovement : MonoBehaviour
         else
         {
             _animator.SetBool("isJumping", false);
+        }
+    }
+
+    private void Attack()
+    {
+        if (Input.GetMouseButton(0))
+        {
+            _canMove = false;
+            _animator.SetBool("isAttacking", true);
+
+        }
+
+        else
+        {
+            _canMove = true;
+            _animator.SetBool("isAttacking", false);
+        }
+
+        if (Input.GetMouseButton(1))
+        {
+            _canMove = false;
+            _animator.SetBool("isYelling", true);
+        }
+
+        else
+        {
+            _canMove = true;
+            _animator.SetBool("isYelling", false);
+        }
+    }
+
+    private void SoundEffects()
+    {
+
+        if (Input.GetMouseButtonDown(1) && _isGrounded)
+        {
+            FindObjectOfType<AudioManager>().Play("Scream");
+        }
+
+        if(!_animator.GetBool("isYelling"))
+        {
+            FindObjectOfType<AudioManager>().StopPlaying("Scream");
         }
     }
 }
