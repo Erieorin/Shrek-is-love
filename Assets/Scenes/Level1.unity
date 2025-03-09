@@ -38,7 +38,6 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18388054, g: 0.22880086, b: 0.30179793, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -4254,7 +4253,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 341644608}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.15435155, y: 1e-45, z: -0, w: 0.988016}
+  m_LocalRotation: {x: 0.15435156, y: 0, z: 0, w: 0.988016}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -5206,7 +5205,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 401032660}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.15435155, y: 1e-45, z: -0, w: 0.988016}
+  m_LocalRotation: {x: 0.15435156, y: 0, z: 0, w: 0.988016}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -9537,6 +9536,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1124531396}
+  - {fileID: 1442252092}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!143 &769326562
@@ -9561,7 +9561,7 @@ CharacterController:
   m_Height: 10
   m_Radius: 2
   m_SlopeLimit: 45
-  m_StepOffset: 0.3
+  m_StepOffset: 1.2
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 2.5, z: 0}
@@ -9579,8 +9579,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _characterController: {fileID: 769326562}
   _camera: {fileID: 186611881}
+  _groundCheck: {fileID: 1442252092}
+  _animator: {fileID: 2058626148}
   _speed: 10
-  _turnSmoothTime: 0.2
+  _gravity: -9.81
+  _jumpHeight: 3
+  _turnSmoothTime: 0.25
+  _groundDistance: 0.65
+  _groundMask:
+    serializedVersion: 2
+    m_Bits: 8
+  _isGrounded: 0
 --- !u!1001 &780240928
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13806,6 +13815,7 @@ Terrain:
   m_DetailObjectDensity: 1
   m_HeightmapPixelError: 5
   m_SplatMapDistance: 1000
+  m_HeightmapMinimumLODSimplification: 0
   m_HeightmapMaximumLOD: 0
   m_ShadowCastingMode: 2
   m_DrawHeightmap: 1
@@ -17314,6 +17324,37 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 442488, guid: ec78ebca7517fb745a45a931cb06d2bd, type: 3}
   m_PrefabInstance: {fileID: 259080118}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1442252091
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1442252092}
+  m_Layer: 0
+  m_Name: groundCheck
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1442252092
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1442252091}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -3.2, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 769326561}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &1442474302 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 429508, guid: 9c74caa742791864f9c678287121e6c9, type: 3}
@@ -23089,7 +23130,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1867952365}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.15435155, y: 1e-45, z: -0, w: 0.988016}
+  m_LocalRotation: {x: 0.15435156, y: 0, z: 0, w: 0.988016}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -25039,6 +25080,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ec78ebca7517fb745a45a931cb06d2bd, type: 3}
+--- !u!95 &2058626148 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 5866666021909216657, guid: 33685e9de604f67468b8db58c3aff203, type: 3}
+  m_PrefabInstance: {fileID: 1981999050}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &2060534258 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 442488, guid: ec78ebca7517fb745a45a931cb06d2bd, type: 3}
@@ -25283,6 +25329,7 @@ Terrain:
   m_DetailObjectDensity: 1
   m_HeightmapPixelError: 5
   m_SplatMapDistance: 1000
+  m_HeightmapMinimumLODSimplification: 0
   m_HeightmapMaximumLOD: 0
   m_ShadowCastingMode: 2
   m_DrawHeightmap: 1

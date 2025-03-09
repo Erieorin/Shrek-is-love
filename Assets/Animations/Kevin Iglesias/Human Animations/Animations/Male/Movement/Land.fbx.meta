@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: d4f295b55050f1c4eb379ec3b6065e52
+guid: 59920bb9f6034d14398f511b8ab4ad26
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -33,19 +33,19 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: HumanM@Fall01
+      name: Land
       takeName: Untitled
       internalID: 3094330708855449807
-      firstFrame: 0
-      lastFrame: 30
+      firstFrame: 21
+      lastFrame: 46
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 1
-      loopBlend: 1
+      loopTime: 0
+      loopBlend: 0
       loopBlendOrientation: 1
       loopBlendPositionY: 1
       loopBlendPositionXZ: 1
