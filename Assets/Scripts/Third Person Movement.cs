@@ -43,7 +43,6 @@ public class ThirdPersonMovement : MonoBehaviour
         Gravity();
         Attack();
         Jump();
-        SoundEffects();
 
         _canMove = false;
 
@@ -117,14 +116,14 @@ public class ThirdPersonMovement : MonoBehaviour
     private void Attack()
     {
         // Обычная атака
-        if (Input.GetMouseButtonDown(0)) // Анимация запускается только при нажатии
+        if (Input.GetMouseButtonDown(0) && !IsAnimationPlaying("Attacking") && !IsAnimationPlaying("Yelling") && _isGrounded) // Анимация запускается только при нажатии
         {
             _canMove = false;
             _animator.SetTrigger("Attack"); // Используем триггер для анимации атаки
         }
 
         // Атака "yelling"
-        if (Input.GetMouseButtonDown(1)) // Анимация запускается только при нажатии
+        if (Input.GetMouseButtonDown(1) && !IsAnimationPlaying("Yelling") && !IsAnimationPlaying("Attacking") && _isGrounded) // Анимация запускается только при нажатии
         {
             _canMove = false;
             ManaSystem manaSystem = GetComponent<ManaSystem>();
@@ -132,24 +131,13 @@ public class ThirdPersonMovement : MonoBehaviour
             {
                 if (manaSystem.UseSufficientMana(manaPoints)) {
                     _animator.SetTrigger("Yell"); // Используем триггер для анимации "yelling"
+                    FindObjectOfType<AudioManager>().Play("Scream");
                 }
             }
         } 
     }
 
-    private void SoundEffects()
-    {
 
-        if (Input.GetMouseButtonDown(1) && _isGrounded)
-        {
-            FindObjectOfType<AudioManager>().Play("Scream");
-        }
-
-        if(!_animator.GetBool("isYelling"))
-        {
-            FindObjectOfType<AudioManager>().StopPlaying("Scream");
-        }
-    }
 
     // Переменная, вызывающаяся в аниматоре
     // Не используется
