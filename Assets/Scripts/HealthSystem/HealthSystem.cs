@@ -7,10 +7,18 @@ public class HealthSystem : MonoBehaviour
     private int currentHealth;
 
     public Slider healthSlider; // Ссылка на UI Slider
+    public Image healthImage;   // Ссылка на Image для спрайтов
+    public Sprite health100;   // Спрайт для 100% здоровья
+    public Sprite health75;    // Спрайт для 75% здоровья
+    public Sprite health50;    // Спрайт для 50% здоровья
+    public Sprite health25;    // Спрайт для 25% здоровья
+    public Sprite health0;     // Спрайт для 0% здоровья
 
     private RectTransform healthBarRect; // RectTransform для изменения ширины
     
     private float baseWidth;
+
+    public UIManipulation uiManipulation;
 
     void Start()
     {
@@ -46,7 +54,7 @@ public class HealthSystem : MonoBehaviour
     private void Die()
     {
         Debug.Log("Player is dead!");
-        Application.Quit();
+        uiManipulation.DeathSequence();
     }
 
     private void UpdateHealthUI()
@@ -54,6 +62,33 @@ public class HealthSystem : MonoBehaviour
         if (healthSlider != null)
         {
             healthSlider.value = currentHealth;
+        }
+
+        // Обновляем спрайт в зависимости от процента здоровья
+        if (healthImage != null)
+        {
+            float healthPercent = (float)currentHealth / maxHealth * 100f;
+
+            if (healthPercent > 75f)
+            {
+                healthImage.sprite = health100;
+            }
+            else if (healthPercent > 50f)
+            {
+                healthImage.sprite = health75;
+            }
+            else if (healthPercent > 25f)
+            {
+                healthImage.sprite = health50;
+            }
+            else if (healthPercent > 0f)
+            {
+                healthImage.sprite = health25;
+            }
+            else
+            {
+                healthImage.sprite = health0;
+            }
         }
     }
 

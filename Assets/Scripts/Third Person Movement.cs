@@ -15,11 +15,11 @@ public class ThirdPersonMovement : MonoBehaviour
     public float _gravity = -9.81f;
     public float _jumpHeight = 3f;
 
-    // плавное движение камеры
+    // пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
     public float _turnSmoothTime = 0.1f;
     float _turnSmoothVelocity;
 
-    // для скорости падения
+    // пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
     Vector3 _velocity;
 
     public float _groundDistance = 0.4f;
@@ -27,6 +27,10 @@ public class ThirdPersonMovement : MonoBehaviour
 
     public bool _isGrounded;
     public bool _canMove = true;
+
+    public int physAttackPoints = 5;
+    public int yellAttackPoints = 2;
+    public int manaPoints = 5;
 
     void Start()
     {
@@ -40,6 +44,14 @@ public class ThirdPersonMovement : MonoBehaviour
         Attack();
         Jump();
         SoundEffects();
+
+        _canMove = false;
+
+        // РџСЂРѕРІРµСЂСЏРµРј Р·Р°РІРµСЂС€РµРЅРёРµ Р°РЅРёРјР°С†РёРё Р°С‚Р°РєРё Рё РєСЂРёРєР°
+        if (!IsAnimationPlaying("Attacking") && !IsAnimationPlaying("Yelling"))
+        {
+            _canMove = true;
+        }
     }
 
     private void Move()
@@ -57,10 +69,10 @@ public class ThirdPersonMovement : MonoBehaviour
 
         float _speed = _inputMagnitude * _minimumSpeed;
 
-        if (_direction.magnitude >= 0.1f && _canMove) // проверяем, двиагемся ли, сравнивая длину вектора направления
+        if (_direction.magnitude >= 0.1f && _canMove) // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
         {
-            // угол поворота игрока. atan2 - функция, возвращающая угол между осью и вектором направления
-            float _targetAngle = Mathf.Atan2(_direction.x, _direction.z) * Mathf.Rad2Deg + _camera.eulerAngles.y; // переводим в градусы и добавляем вращение камеры по y 
+            // пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ. atan2 - пїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+            float _targetAngle = Mathf.Atan2(_direction.x, _direction.z) * Mathf.Rad2Deg + _camera.eulerAngles.y; // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ y 
             float _angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, _targetAngle, ref _turnSmoothVelocity, _turnSmoothTime);
 
             transform.rotation = Quaternion.Euler(0f, _angle, 0f);
@@ -74,14 +86,14 @@ public class ThirdPersonMovement : MonoBehaviour
 
     private void Gravity()
     {
-        _isGrounded = Physics.CheckSphere(_groundCheck.position, _groundDistance, _groundMask); // создает маленькую сферу радиусом Distance в позиции объекта, проверяет коллизию со слоем в Mask 
+        _isGrounded = Physics.CheckSphere(_groundCheck.position, _groundDistance, _groundMask); // пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ Distance пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅ Mask 
         _animator.SetBool("isGrounded", _isGrounded);
 
         if (_isGrounded && _velocity.y < 0)
         {
             _velocity.y = -2f;
         }
-        // падение
+        // пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
         _velocity.y += _gravity * Time.deltaTime;
         _characterController.Move(_velocity * Time.deltaTime);
     }
@@ -104,30 +116,25 @@ public class ThirdPersonMovement : MonoBehaviour
 
     private void Attack()
     {
-        if (Input.GetMouseButton(0))
+        // РћР±С‹С‡РЅР°СЏ Р°С‚Р°РєР°
+        if (Input.GetMouseButtonDown(0)) // РђРЅРёРјР°С†РёСЏ Р·Р°РїСѓСЃРєР°РµС‚СЃСЏ С‚РѕР»СЊРєРѕ РїСЂРё РЅР°Р¶Р°С‚РёРё
         {
             _canMove = false;
-            _animator.SetBool("isAttacking", true);
-
+            _animator.SetTrigger("Attack"); // РСЃРїРѕР»СЊР·СѓРµРј С‚СЂРёРіРіРµСЂ РґР»СЏ Р°РЅРёРјР°С†РёРё Р°С‚Р°РєРё
         }
 
-        else
-        {
-            _canMove = true;
-            _animator.SetBool("isAttacking", false);
-        }
-
-        if (Input.GetMouseButton(1))
+        // РђС‚Р°РєР° "yelling"
+        if (Input.GetMouseButtonDown(1)) // РђРЅРёРјР°С†РёСЏ Р·Р°РїСѓСЃРєР°РµС‚СЃСЏ С‚РѕР»СЊРєРѕ РїСЂРё РЅР°Р¶Р°С‚РёРё
         {
             _canMove = false;
-            _animator.SetBool("isYelling", true);
-        }
-
-        else
-        {
-            _canMove = true;
-            _animator.SetBool("isYelling", false);
-        }
+            ManaSystem manaSystem = GetComponent<ManaSystem>();
+            if (manaSystem != null && manaSystem.GetCurrentMana() > 0)
+            {
+                if (manaSystem.UseSufficientMana(manaPoints)) {
+                    _animator.SetTrigger("Yell"); // РСЃРїРѕР»СЊР·СѓРµРј С‚СЂРёРіРіРµСЂ РґР»СЏ Р°РЅРёРјР°С†РёРё "yelling"
+                }
+            }
+        } 
     }
 
     private void SoundEffects()
@@ -142,5 +149,20 @@ public class ThirdPersonMovement : MonoBehaviour
         {
             FindObjectOfType<AudioManager>().StopPlaying("Scream");
         }
+    }
+
+    // РџРµСЂРµРјРµРЅРЅР°СЏ, РІС‹Р·С‹РІР°СЋС‰Р°СЏСЃСЏ РІ Р°РЅРёРјР°С‚РѕСЂРµ
+    // РќРµ РёСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ
+    public void EnableMovement()
+    {
+        _canMove = true;
+    }
+
+    // РњРµС‚РѕРґ РґР»СЏ РїСЂРѕРІРµСЂРєРё, РїСЂРѕРёРіСЂС‹РІР°РµС‚СЃСЏ Р»Рё Р°РЅРёРјР°С†РёСЏ
+    private bool IsAnimationPlaying(string animationName)
+    {
+        AnimatorStateInfo stateInfo = _animator.GetCurrentAnimatorStateInfo(0);
+        bool isPlaying = stateInfo.IsName(animationName) && stateInfo.normalizedTime < 1.0f;
+        return isPlaying;
     }
 }
