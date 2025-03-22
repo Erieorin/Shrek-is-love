@@ -4,6 +4,10 @@ using System.Collections.Generic;
 using System.Timers;
 using UnityEngine;
 
+
+
+// Пофиксите кодировки, файлы называем слитно, без пробелов
+
 public class ThirdPersonMovement : MonoBehaviour
 {
     public CharacterController _characterController;
@@ -31,6 +35,9 @@ public class ThirdPersonMovement : MonoBehaviour
     public int physAttackPoints = 5;
     public int yellAttackPoints = 2;
     public int manaPoints = 5;
+
+    // Зачем так много публичных полей?
+    // Если вы хотите это настраивать, вешайте [SerializeField] и поменяйте модификаторы доступа на private
 
     void Start()
     {

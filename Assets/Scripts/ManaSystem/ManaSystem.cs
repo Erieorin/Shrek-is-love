@@ -18,6 +18,30 @@ public class ManaSystem : MonoBehaviour
     
     private float baseWidth;
 
+    // В юнити для создания Singleton объекта делают так обычно
+    // private static ManaSystem _instance;
+    // а потом в методе Awake можно написать так    
+    //
+    // void Awake() 
+    // {
+    //     if (_instance == null) 
+    //     {
+    //         _instance = FindObjectOfType<ManaSystem>();
+    //         if (_instance == null) 
+    //         {
+    //             _instance == this;
+    //         }
+            
+    //     } 
+        
+    //     if (_instance != this)
+    //     {
+    //         Destroy(gameObject);
+    //         return;
+    //     }
+        
+    // }
+
     void Start()
     {
         manaSlider.maxValue = maxMana;
