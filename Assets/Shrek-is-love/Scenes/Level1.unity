@@ -4619,7 +4619,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 341644608}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0.15435156, y: 0, z: 0, w: 0.988016}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -10302,8 +10302,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characterController: {fileID: 769326562}
-  _camera: {fileID: 186611881}
-  _groundCheck: {fileID: 1442252092}
+  camera: {fileID: 186611881}
+  groundCheck: {fileID: 1442252092}
   animator: {fileID: 2058626148}
   minimumSpeed: 15
   gravity: -9.81

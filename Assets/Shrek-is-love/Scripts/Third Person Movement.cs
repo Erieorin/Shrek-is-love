@@ -7,8 +7,8 @@ using UnityEngine;
 public class ThirdPersonMovement : MonoBehaviour
 {
     [SerializeField] private CharacterController characterController;
-    [SerializeField] private Transform _camera;
-    [SerializeField] private Transform _groundCheck;
+    [SerializeField] private new Transform camera;
+    [SerializeField] private Transform groundCheck;
     [SerializeField] private Animator animator;
 
     [SerializeField] private float minimumSpeed = 15f;
@@ -23,7 +23,7 @@ public class ThirdPersonMovement : MonoBehaviour
     [SerializeField] private float groundDistance = 0.65f;
     [SerializeField] private LayerMask groundMask;
 
-    [SerializeField] private bool _isGrounded;
+    [SerializeField] private bool isGrounded;
     [SerializeField] private bool canMove = true;
 
     [SerializeField] private int physAttackPoints = 5;
@@ -59,7 +59,7 @@ public class ThirdPersonMovement : MonoBehaviour
 
         float inputMagnitude = Mathf.Clamp01(direction.magnitude);
 
-        if ((Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift)) && _isGrounded)
+        if ((Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift)) && isGrounded)
         {
             inputMagnitude *= 2;
         }
@@ -68,7 +68,7 @@ public class ThirdPersonMovement : MonoBehaviour
 
         if (direction.magnitude >= 0.1f && canMove) 
         {
-            float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + _camera.eulerAngles.y; 
+            float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + camera.eulerAngles.y; 
             float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothTime);
 
             transform.rotation = Quaternion.Euler(0f, angle, 0f);
@@ -82,10 +82,10 @@ public class ThirdPersonMovement : MonoBehaviour
 
     private void Gravity()
     {
-        _isGrounded = Physics.CheckSphere(_groundCheck.position, groundDistance, groundMask); // ������� ��������� ����� �������� Distance � ������� �������, ��������� �������� �� ����� � Mask 
-        animator.SetBool("isGrounded", _isGrounded);
+        isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask); // ������� ��������� ����� �������� Distance � ������� �������, ��������� �������� �� ����� � Mask 
+        animator.SetBool("isGrounded", isGrounded);
 
-        if (_isGrounded && velocity.y < 0)
+        if (isGrounded && velocity.y < 0)
         {
             velocity.y = -2f;
         }
@@ -95,7 +95,7 @@ public class ThirdPersonMovement : MonoBehaviour
 
     private void Jump()
     {
-        if (Input.GetButton("Jump") && _isGrounded && canMove)
+        if (Input.GetButton("Jump") && isGrounded && canMove)
         {
             velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
             Console.WriteLine("jump");
@@ -112,14 +112,14 @@ public class ThirdPersonMovement : MonoBehaviour
     private void Attack()
     {
         // Обычная атака
-        if (Input.GetMouseButtonDown(0) && !IsAnimationPlaying("Attacking") && !IsAnimationPlaying("Yelling") && _isGrounded) // Анимация запускается только при нажатии
+        if (Input.GetMouseButtonDown(0) && !IsAnimationPlaying("Attacking") && !IsAnimationPlaying("Yelling") && isGrounded) // Анимация запускается только при нажатии
         {
             canMove = false;
             animator.SetTrigger("Attack"); // Используем триггер для анимации атаки
         }
 
         // Атака "yelling"
-        if (Input.GetMouseButtonDown(1) && !IsAnimationPlaying("Yelling") && !IsAnimationPlaying("Attacking") && _isGrounded) // Анимация запускается только при нажатии
+        if (Input.GetMouseButtonDown(1) && !IsAnimationPlaying("Yelling") && !IsAnimationPlaying("Attacking") && isGrounded) // Анимация запускается только при нажатии
         {
             canMove = false;
             ManaSystem manaSystem = GetComponent<ManaSystem>();
