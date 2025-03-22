@@ -6,25 +6,25 @@ using UnityEngine;
 
 public class ThirdPersonMovement : MonoBehaviour
 {
-    [SerializeField] private CharacterController _characterController;
+    [SerializeField] private CharacterController characterController;
     [SerializeField] private Transform _camera;
     [SerializeField] private Transform _groundCheck;
-    [SerializeField] private Animator _animator;
+    [SerializeField] private Animator animator;
 
-    [SerializeField] private float _minimumSpeed = 15f;
-    [SerializeField] private float _gravity = -9.81f;
-    [SerializeField] private float _jumpHeight = 3f;
+    [SerializeField] private float minimumSpeed = 15f;
+    [SerializeField] private float gravity = -9.81f;
+    [SerializeField] private float jumpHeight = 3f;
 
-    [SerializeField] private float _turnSmoothTime = 0.25f;
-    float _turnSmoothVelocity;
+    [SerializeField] private float turnSmoothTime = 0.25f;
+    float turnSmoothVelocity;
 
-    Vector3 _velocity;
+    Vector3 velocity;
 
-    [SerializeField] private float _groundDistance = 0.65f;
-    [SerializeField] private LayerMask _groundMask;
+    [SerializeField] private float groundDistance = 0.65f;
+    [SerializeField] private LayerMask groundMask;
 
     [SerializeField] private bool _isGrounded;
-    [SerializeField] private bool _canMove = true;
+    [SerializeField] private bool canMove = true;
 
     [SerializeField] private int physAttackPoints = 5;
     [SerializeField] private int yellAttackPoints = 2;
@@ -42,70 +42,70 @@ public class ThirdPersonMovement : MonoBehaviour
         Attack();
         Jump();
 
-        _canMove = false;
+        canMove = false;
 
         // Проверяем завершение анимации атаки и крика
         if (!IsAnimationPlaying("Attacking") && !IsAnimationPlaying("Yelling"))
         {
-            _canMove = true;
+            canMove = true;
         }
     }
 
     private void Move()
     {
-        float _horizontal = Input.GetAxisRaw("Horizontal");
-        float _vertical = Input.GetAxisRaw("Vertical");
-        Vector3 _direction = new Vector3(_horizontal, 0f, _vertical).normalized;
+        float horizontal = Input.GetAxisRaw("Horizontal");
+        float vertical = Input.GetAxisRaw("Vertical");
+        Vector3 direction = new Vector3(horizontal, 0f, vertical).normalized;
 
-        float _inputMagnitude = Mathf.Clamp01(_direction.magnitude);
+        float inputMagnitude = Mathf.Clamp01(direction.magnitude);
 
         if ((Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift)) && _isGrounded)
         {
-            _inputMagnitude *= 2;
+            inputMagnitude *= 2;
         }
 
-        float _speed = _inputMagnitude * _minimumSpeed;
+        float speed = inputMagnitude * minimumSpeed;
 
-        if (_direction.magnitude >= 0.1f && _canMove) 
+        if (direction.magnitude >= 0.1f && canMove) 
         {
-            float _targetAngle = Mathf.Atan2(_direction.x, _direction.z) * Mathf.Rad2Deg + _camera.eulerAngles.y; 
-            float _angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, _targetAngle, ref _turnSmoothVelocity, _turnSmoothTime);
+            float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + _camera.eulerAngles.y; 
+            float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothTime);
 
-            transform.rotation = Quaternion.Euler(0f, _angle, 0f);
+            transform.rotation = Quaternion.Euler(0f, angle, 0f);
 
-            Vector3 _moveDirection = Quaternion.Euler(0f, _targetAngle, 0f) * Vector3.forward;
-            _characterController.Move(_moveDirection.normalized * _speed * Time.deltaTime);
+            Vector3 moveDirection = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
+            characterController.Move(moveDirection.normalized * speed * Time.deltaTime);
 
         }
-        _animator.SetFloat("inputMagnitude", _inputMagnitude, 0.1f, Time.deltaTime);
+        animator.SetFloat("inputMagnitude", inputMagnitude, 0.1f, Time.deltaTime);
     }
 
     private void Gravity()
     {
-        _isGrounded = Physics.CheckSphere(_groundCheck.position, _groundDistance, _groundMask); // ������� ��������� ����� �������� Distance � ������� �������, ��������� �������� �� ����� � Mask 
-        _animator.SetBool("isGrounded", _isGrounded);
+        _isGrounded = Physics.CheckSphere(_groundCheck.position, groundDistance, groundMask); // ������� ��������� ����� �������� Distance � ������� �������, ��������� �������� �� ����� � Mask 
+        animator.SetBool("isGrounded", _isGrounded);
 
-        if (_isGrounded && _velocity.y < 0)
+        if (_isGrounded && velocity.y < 0)
         {
-            _velocity.y = -2f;
+            velocity.y = -2f;
         }
-        _velocity.y += _gravity * Time.deltaTime;
-        _characterController.Move(_velocity * Time.deltaTime);
+        velocity.y += gravity * Time.deltaTime;
+        characterController.Move(velocity * Time.deltaTime);
     }
 
     private void Jump()
     {
-        if (Input.GetButton("Jump") && _isGrounded && _canMove)
+        if (Input.GetButton("Jump") && _isGrounded && canMove)
         {
-            _velocity.y = Mathf.Sqrt(_jumpHeight * -2f * _gravity);
+            velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
             Console.WriteLine("jump");
-            _animator.SetBool("isJumping", true);
+            animator.SetBool("isJumping", true);
 
         }
 
         else
         {
-            _animator.SetBool("isJumping", false);
+            animator.SetBool("isJumping", false);
         }
     }
 
@@ -114,19 +114,19 @@ public class ThirdPersonMovement : MonoBehaviour
         // Обычная атака
         if (Input.GetMouseButtonDown(0) && !IsAnimationPlaying("Attacking") && !IsAnimationPlaying("Yelling") && _isGrounded) // Анимация запускается только при нажатии
         {
-            _canMove = false;
-            _animator.SetTrigger("Attack"); // Используем триггер для анимации атаки
+            canMove = false;
+            animator.SetTrigger("Attack"); // Используем триггер для анимации атаки
         }
 
         // Атака "yelling"
         if (Input.GetMouseButtonDown(1) && !IsAnimationPlaying("Yelling") && !IsAnimationPlaying("Attacking") && _isGrounded) // Анимация запускается только при нажатии
         {
-            _canMove = false;
+            canMove = false;
             ManaSystem manaSystem = GetComponent<ManaSystem>();
             if (manaSystem != null && manaSystem.GetCurrentMana() > 0)
             {
                 if (manaSystem.UseSufficientMana(manaPoints)) {
-                    _animator.SetTrigger("Yell"); // Используем триггер для анимации "yelling"
+                    animator.SetTrigger("Yell"); // Используем триггер для анимации "yelling"
                     FindObjectOfType<AudioManager>().Play("Scream");
                 }
             }
@@ -139,13 +139,13 @@ public class ThirdPersonMovement : MonoBehaviour
     // Не используется
     public void EnableMovement()
     {
-        _canMove = true;
+        canMove = true;
     }
 
     // Метод для проверки, проигрывается ли анимация
     private bool IsAnimationPlaying(string animationName)
     {
-        AnimatorStateInfo stateInfo = _animator.GetCurrentAnimatorStateInfo(0);
+        AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
         bool isPlaying = stateInfo.IsName(animationName) && stateInfo.normalizedTime < 1.0f;
         return isPlaying;
     }
