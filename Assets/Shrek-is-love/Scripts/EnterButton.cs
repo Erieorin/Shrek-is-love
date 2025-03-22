@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 public class EnterButton : MonoBehaviour
 {
-    public Button button; // Ссылка на кнопку
+    [SerializeField] private Button button; // Ссылка на кнопку
 
     private void Update()
     {

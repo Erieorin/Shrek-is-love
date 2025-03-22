@@ -6,31 +6,29 @@ using UnityEngine;
 
 public class ThirdPersonMovement : MonoBehaviour
 {
-    public CharacterController _characterController;
-    public Transform _camera;
-    public Transform _groundCheck;
-    public Animator _animator;
+    [SerializeField] private CharacterController _characterController;
+    [SerializeField] private Transform _camera;
+    [SerializeField] private Transform _groundCheck;
+    [SerializeField] private Animator _animator;
 
-    public float _minimumSpeed = 10f;
-    public float _gravity = -9.81f;
-    public float _jumpHeight = 3f;
+    [SerializeField] private float _minimumSpeed = 15f;
+    [SerializeField] private float _gravity = -9.81f;
+    [SerializeField] private float _jumpHeight = 3f;
 
-    // ������� �������� ������
-    public float _turnSmoothTime = 0.1f;
+    [SerializeField] private float _turnSmoothTime = 0.25f;
     float _turnSmoothVelocity;
 
-    // ��� �������� �������
     Vector3 _velocity;
 
-    public float _groundDistance = 0.4f;
-    public LayerMask _groundMask;
+    [SerializeField] private float _groundDistance = 0.65f;
+    [SerializeField] private LayerMask _groundMask;
 
-    public bool _isGrounded;
-    public bool _canMove = true;
+    [SerializeField] private bool _isGrounded;
+    [SerializeField] private bool _canMove = true;
 
-    public int physAttackPoints = 5;
-    public int yellAttackPoints = 2;
-    public int manaPoints = 5;
+    [SerializeField] private int physAttackPoints = 5;
+    [SerializeField] private int yellAttackPoints = 2;
+    [SerializeField] private int manaPoints = 5;
 
     void Start()
     {
@@ -68,10 +66,9 @@ public class ThirdPersonMovement : MonoBehaviour
 
         float _speed = _inputMagnitude * _minimumSpeed;
 
-        if (_direction.magnitude >= 0.1f && _canMove) // ���������, ��������� ��, ��������� ����� ������� �����������
+        if (_direction.magnitude >= 0.1f && _canMove) 
         {
-            // ���� �������� ������. atan2 - �������, ������������ ���� ����� ���� � �������� �����������
-            float _targetAngle = Mathf.Atan2(_direction.x, _direction.z) * Mathf.Rad2Deg + _camera.eulerAngles.y; // ��������� � ������� � ��������� �������� ������ �� y 
+            float _targetAngle = Mathf.Atan2(_direction.x, _direction.z) * Mathf.Rad2Deg + _camera.eulerAngles.y; 
             float _angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, _targetAngle, ref _turnSmoothVelocity, _turnSmoothTime);
 
             transform.rotation = Quaternion.Euler(0f, _angle, 0f);
@@ -92,7 +89,6 @@ public class ThirdPersonMovement : MonoBehaviour
         {
             _velocity.y = -2f;
         }
-        // �������
         _velocity.y += _gravity * Time.deltaTime;
         _characterController.Move(_velocity * Time.deltaTime);
     }

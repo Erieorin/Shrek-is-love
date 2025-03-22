@@ -1,15 +1,15 @@
 using UnityEngine;
 
-public class HealingItem : MonoBehaviour
+public class DamageDealer : MonoBehaviour
 {
-    public int healAmount = 5;
+    [SerializeField] private int damageAmount = 2;
 
     private void OnTriggerEnter(Collider other)
     {
         HealthSystem healthSystem = other.GetComponent<HealthSystem>();
         if (healthSystem != null)
         {
-            healthSystem.Heal(healAmount);
+            healthSystem.TakeDamage(damageAmount);
         }
     }
 }

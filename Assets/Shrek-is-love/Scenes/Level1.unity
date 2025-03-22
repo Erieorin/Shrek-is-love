@@ -2344,10 +2344,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 171480352}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 03faf3415be7d4e819081df605b6c0e0, type: 3}
+  m_Script: {fileID: 11500000, guid: 5651ef57cc9474932bc6e339b60013a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  healAmount: 5
+  restoreAmount: 10
+  restoreHealth: 1
 --- !u!1001 &179585895
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6763,10 +6764,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 475640901}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3a8555ecc067944d5a4183ba332bffa8, type: 3}
+  m_Script: {fileID: 11500000, guid: 5651ef57cc9474932bc6e339b60013a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  manaAmount: 2
+  restoreAmount: 5
+  restoreHealth: 0
 --- !u!4 &476373677 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 442488, guid: ec78ebca7517fb745a45a931cb06d2bd, type: 3}
@@ -10234,8 +10236,8 @@ GameObject:
   - component: {fileID: 769326561}
   - component: {fileID: 769326562}
   - component: {fileID: 769326563}
-  - component: {fileID: 769326564}
   - component: {fileID: 769326565}
+  - component: {fileID: 769326567}
   - component: {fileID: 769326566}
   m_Layer: 0
   m_Name: Player
@@ -10316,27 +10318,6 @@ MonoBehaviour:
   physAttackPoints: 5
   yellAttackPoints: 2
   manaPoints: 5
---- !u!114 &769326564
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 769326559}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 275c549373a584177b05546232fc0cae, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxHealth: 20
-  healthSlider: {fileID: 796954404}
-  healthImage: {fileID: 934726021}
-  health100: {fileID: 21300000, guid: 4fe55422fb6e94f259882b83ac8f0608, type: 3}
-  health75: {fileID: 21300000, guid: c86976d6f3b6f4125840ddeb99143b7a, type: 3}
-  health50: {fileID: 21300000, guid: 442abdc0798704f30883c939abf535a9, type: 3}
-  health25: {fileID: 21300000, guid: 20a1ca3c39b164d7f86c89e3d1158574, type: 3}
-  health0: {fileID: 21300000, guid: 2c08c724036d74ac5900506d4f2ccbbf, type: 3}
-  uiManipulation: {fileID: 1765980777}
 --- !u!114 &769326565
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10349,7 +10330,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9437130a365314bfd849c5ee4093c166, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  healthSystem: {fileID: 769326564}
+  healthSystem: {fileID: 769326567}
   manaSystem: {fileID: 769326566}
 --- !u!114 &769326566
 MonoBehaviour:
@@ -10360,7 +10341,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 769326559}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ecbe441ebd74e44bbb71efb94ec86b15, type: 3}
+  m_Script: {fileID: 11500000, guid: 6516b6e1847fb42b9b14a3cc37790b44, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   maxMana: 15
@@ -10371,6 +10352,27 @@ MonoBehaviour:
   mana50: {fileID: 21300000, guid: eb5b3d4ed85be4e0da204cd61b97ce8f, type: 3}
   mana25: {fileID: 21300000, guid: 96e06fccff93e4b2b9574a8795a73aec, type: 3}
   mana0: {fileID: 21300000, guid: 6eda5b772a9be4d8387ffa0d10fb24b5, type: 3}
+--- !u!114 &769326567
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 769326559}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e5e5897a504864dd6a47edc82bd2fa4c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 20
+  healthSlider: {fileID: 796954404}
+  healthImage: {fileID: 934726021}
+  health100: {fileID: 21300000, guid: 4fe55422fb6e94f259882b83ac8f0608, type: 3}
+  health75: {fileID: 21300000, guid: c86976d6f3b6f4125840ddeb99143b7a, type: 3}
+  health50: {fileID: 21300000, guid: 442abdc0798704f30883c939abf535a9, type: 3}
+  health25: {fileID: 21300000, guid: 20a1ca3c39b164d7f86c89e3d1158574, type: 3}
+  health0: {fileID: 21300000, guid: 2c08c724036d74ac5900506d4f2ccbbf, type: 3}
+  uiManipulation: {fileID: 1765980777}
 --- !u!1001 &780240928
 PrefabInstance:
   m_ObjectHideFlags: 0

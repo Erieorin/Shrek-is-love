@@ -3,20 +3,52 @@ using UnityEngine.UI;
 
 public class ManaSystem : MonoBehaviour 
 {
-    public int maxMana = 15;
+    [SerializeField] private int maxMana = 15;
     private int currentMana;
 
-    public Slider manaSlider; // Ссылка на UI Slider
-    public Image manaImage;   // Ссылка на Image для спрайтов
-    public Sprite mana100;   // Спрайт для 100% маны
-    public Sprite mana75;    // Спрайт для 75% маны
-    public Sprite mana50;    // Спрайт для 50% маны
-    public Sprite mana25;    // Спрайт для 25% маны
-    public Sprite mana0;     // Спрайт для 0% маны
+    [SerializeField] private Slider manaSlider; // Ссылка на UI Slider
+    [SerializeField] private Image manaImage;   // Ссылка на Image для спрайтов
+    [SerializeField] private Sprite mana100;   // Спрайт для 100% маны
+    [SerializeField] private Sprite mana75;    // Спрайт для 75% маны
+    [SerializeField] private Sprite mana50;    // Спрайт для 50% маны
+    [SerializeField] private Sprite mana25;    // Спрайт для 25% маны
+    [SerializeField] private Sprite mana0;     // Спрайт для 0% маны
 
     private RectTransform manaBarRect; // RectTransform для изменения ширины
     
     private float baseWidth;
+
+    private static ManaSystem _instance;
+
+    public static ManaSystem Instance
+    {
+        get
+        {
+            if (_instance == null)
+            {
+                _instance = FindObjectOfType<ManaSystem>();
+                if (_instance == null)
+                {
+                    GameObject obj = new GameObject();
+                    obj.name = "ManaSystem";
+                    _instance = obj.AddComponent<ManaSystem>();
+                }
+            }
+            return _instance;
+        }
+    }
+
+    void Awake()
+    {
+        if (_instance == null)
+        {
+            _instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
 
     void Start()
     {

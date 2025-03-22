@@ -3,7 +3,7 @@ using UnityEngine.SceneManagement;
 
 public class RestartLevel : MonoBehaviour
 {
-    public UIManipulation UIManipulation;
+    [SerializeField] private UIManipulation UIManipulation;
 
     // Метод для перезапуска уровня
     public void Restart()

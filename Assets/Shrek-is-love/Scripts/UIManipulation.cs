@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class UIManipulation : MonoBehaviour 
 {
-    public GameObject UICanvas;
-    public GameObject DeathScreen;
+    [SerializeField] private GameObject UICanvas;
+    [SerializeField] private GameObject DeathScreen;
 
     public void DeathSequence()
     {
